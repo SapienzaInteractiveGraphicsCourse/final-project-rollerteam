@@ -37,7 +37,7 @@ The source code strictly enforces the separation of concerns, isolating geometri
 /Project
 ├── index.html            # WebGL Canvas container and HTML UI overlay
 ├── style.css
-├── Report.pdf     # Technical presentation and User Manual
+├── Documentation.pdf     # Technical presentation and User Manual
 ├── assets/               # External assets: Textures (wood, normal map) and raster images
 └── src/                  
     ├── main.js           # Main render loop (requestAnimationFrame)
