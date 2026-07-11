@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roller Skating Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Loading screen -->
+  <div id="loadingScreen">
+    <div class="loading-logo"><span class="txt-dark">Roller</span> <span class="txt-primary">Skate</span></div>
+    <div class="loading-sub">Simulator</div>
+    <div class="loading-bar-container"><div class="loading-bar"></div></div>
+  </div>
+
+  <!-- settings -->
+  <div id="settingsBtn" title="Graphic Settings">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+  </div>
+
+  <div id="settingsPanel" class="glass-panel">
+      <h3 class="panel-title">Settings</h3>
+      
+      <div class="fps-display">
+        <span class="fps-text">Current Performance:</span>
+        <span id="fpsCounter" class="fps-value">60</span>
+        <span class="fps-text">FPS</span>
+      </div>
+
+      <div class="form-group">
+        <label for="qualitySelect" class="input-label">Resolution Scale</label>
+        <select id="qualitySelect" class="select-field">
+          <option value="1.0">High </option>
+          <option value="0.75">Medium </option>
+          <option value="0.5">Low </option>
+        </select>
+      </div>
+      
+      <label class="custom-checkbox">
+        <input type="checkbox" id="shadowToggle" checked>
+        <span class="checkmark"></span>
+        <span class="checkbox-text">Enable Shadow Maps</span>
+      </label>
+  </div>
+
+  <!-- Main menu -->
+  <div id="mainMenu">
+    <div class="menu-panel">
+
+      <h1 class="menu-title"><span class="txt-dark">Roller</span> <span class="txt-primary">Skate.</span></h1>
+      <p class="menu-desc">Lace up and hit the rink. Choose how you want to play today.</p>
+      <span class="menu-tag">Select Game Mode</span>
+
+      <div class="mode-btn mode-btn--green" onclick="enterGame('training')">
+        <div class="mode-text-wrapper">
+          <h3 class="mode-name">Training</h3>
+          <p class="mode-sub">Free skate. Practice your moves with no pressure.</p>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+
+      <div class="mode-btn mode-btn--purple" onclick="enterGame('exhibition')">
+        <div class="mode-text-wrapper">
+          <h3 class="mode-name">Exhibition</h3>
+          <p class="mode-sub">Sit back and watch the choreography routine.</p>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+
+      <div class="mode-btn mode-btn--orange" onclick="enterGame('challenge')">
+        <div class="mode-text-wrapper">
+          <h3 class="mode-name">Challenge</h3>
+          <p class="mode-sub">Race against the clock to set a high score.</p>
+        </div>
+        <div class="mode-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- Game UI  -->
+  <div id="gameContainer">
+    <div id="canvasWrapper">
+      <canvas id="cv"></canvas>
+
+      <!-- Tab mode switcher -->
+      <div id="topModeBar" class="glass-panel">
+        <button class="mode-tab" data-mode="training" id="tab-training">Training</button>
+        <button class="mode-tab" data-mode="exhibition" id="tab-exhibition">Exhibition</button>
+        <button class="mode-tab" data-mode="challenge" id="tab-challenge">Challenge</button>
+      </div>
+
+      <!-- Challenge hud -->
+      <div id="lbl" class="glass-panel">Preparing Engine...</div>
+
+      <div id="hudChallenge" class="glass-panel">
+        <div class="hud-row">
+          <span class="hud-label hud-label--orange">TIME LEFT</span>
+          <span id="uiTimer" class="hud-value">00:00</span>
+        </div>
+        <div class="hud-row">
+          <span class="hud-label hud-label--primary">TOTAL SCORE</span>
+          <span id="uiScore" class="hud-value">0</span>
+        </div>
+        <div class="hud-divider"></div>
+        <div class="form-group-small">
+          <label class="input-label">Difficulty</label>
+          <select id="diffSelect" class="select-field">
+            <option value="easy">Easy (2:00 mins)</option>
+            <option value="medium">Medium (1:30 mins)</option>
+            <option value="hard">Hard (1:00 min)</option>
+          </select>
+        </div>
+        <button id="btnStartChallenge" class="btn-orange">
+          Start 
+          <span class="btn-key"> ⏎ </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- End game screen -->
+    <div id="endGameScreen" class="end-overlay">
+      <div class="end-modal">
+        <h1 class="end-title">TIME'S UP!</h1>
+        
+        <div class="end-card">
+          <div class="end-row">
+            <span class="label-green">Points Earned:</span>
+            <span id="endPointsGained" class="score-value">0</span>
+          </div>
+          
+          <div class="end-row">
+            <span class="label-red">Penalties:</span>
+            <span id="endPointsLost" class="score-value">0</span>
+          </div>
+          
+          <div class="end-divider"></div>
+          
+          <div class="end-row end-final">
+            <span class="label-final">FINAL SCORE:</span>
+            <span id="endFinalScore" class="score-value-final">0</span>
+          </div>
+        </div>
+        
+        <h2 id="endGrade" class="end-grade">FAILED – TRY AGAIN!</h2>
+        
+        <button id="btnCloseEndScreen" class="btn-continue">CONTINUE</button>
+      </div>
+    </div>
+
+    <!-- Bottom controls -->
+    <div id="bottomUI">
+      <div class="ui-col">
+        <div class="ui-col-title"><span id="movTitle">Movement</span></div>
+        <div class="keys-layout" id="ui-movement">
+          <div class="key-row"><div class="key-box" id="kUp">↑</div></div>
+          <div class="key-row">
+            <div class="key-box" id="kLeft">←</div>
+            <div class="key-box" id="kDown">↓</div>
+            <div class="key-box" id="kRight">→</div>
+          </div>
+        </div>
+        <div id="ui-exhibition">
+          <button id="btnExhStart" class="btn-action btn-start">▶ Start</button>
+          <button id="btnExhStop" class="btn-action btn-stop">⏸ Stop</button>
+        </div>
+      </div>
+
+      <div class="ui-divider"></div>
+
+      <div class="ui-col">
+        <div class="ui-col-title">Jumps AND Spins</div>
+        <div class="tricks-grid">
+          <button id="bSpin" class="btn-trick"><div class="k-badge">S</div> Spin</button>
+          <button id="bwaltz" class="btn-trick"><div class="k-badge">Z</div> Waltz</button>
+          <button id="bflip" class="btn-trick"><div class="k-badge">X</div> Flip</button>
+          <button id="baxel" class="btn-trick"><div class="k-badge">C</div> Axel</button>
+        </div>
+      </div>
+
+      <div class="ui-divider"></div>
+
+      <div class="ui-col">
+        <div class="ui-col-title">Camera</div>
+        <select id="camSelect" class="select-field">
+          <option value="orbit">Free Orbit</option>
+          <option value="follow">Follow Player</option>
+          <option value="stands">Grandstand</option>
+        </select>
+      </div>
+
+      <div class="ui-divider"></div>
+
+      <div class="ui-col">
+        <div class="env-layout">
+          
+          <div class="control-group">
+            <div class="ui-col-title">Light</div>
+            <div class="segmented-control" id="lightsSegmented">
+              <button class="seg-btn" data-mode="off">OFF</button>
+              <button class="seg-btn active" data-mode="auto">AUTO</button>
+              <button class="seg-btn" data-mode="on">ON</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <div class="ui-col-title">Time Slider</div>
+            <div class="slider-container">
+              <input type="range" id="timeSlider" min="0" max="24" value="12" step="0.1">
+              <span id="timeLabel" class="time-lbl-val">12:00</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  </div>
+
+ 
+  <!-- Pop up  -->
+  <div id="startChallengeModal" class="modal-overlay" style="display:none;">
+      <div class="modal-box modal-box--orange">
+          <h2 class="modal-title modal-title--orange">CHALLENGE</h2>
+          
+          <p class="modal-subtitle">Difficulty: <span id="startModalDiff">EASY</span></p>
+          
+          <p class="modal-text modal-text--spaced">
+              You need to reach <b id="startModalScore" class="modal-highlight-green">1500</b> points to win.
+          </p>
+          <p class="modal-text modal-text--spaced">
+              You have <b id="startModalTime" class="modal-highlight-red">2:00 minutes</b> available.
+          </p>
+          
+          <button id="btnConfirmStart" class="modal-btn modal-btn--letsgo">LET'S GO!</button>
+      </div>
+  </div>
+
+  <div id="quitChallengeModal" class="modal-overlay" style="display:none;">
+      <div class="modal-box modal-box--red">
+          <h2 class="modal-title modal-title--red">QUIT CHALLENGE?</h2>
+          
+          <p class="modal-text modal-text--lh">Are you sure you want to quit the current challenge?<br><b class="modal-highlight--dark">Your points will be lost.</b></p>
+          
+          <div class="modal-actions">
+              <button id="btnCancelQuit" class="modal-btn modal-btn--cancel">Cancel</button>
+              <button id="btnConfirmQuit" class="modal-btn modal-btn--quit">Yes, Quit</button>
+          </div>
+      </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script type="module" src="./src/main.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+</body>
+</html>
