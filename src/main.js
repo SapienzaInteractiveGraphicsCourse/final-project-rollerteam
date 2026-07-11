@@ -112,7 +112,7 @@ renderer.render(scene, camera);
 // Smooth transition from the loading screen to the DOM Interface
 setTimeout(() => {
     hideLoadingScreen();
-}, 1000); // waiting 1s 
+}, 4000); // waiting 4s 
 
 // Start the recursive loop
 animate(0);
