@@ -12,6 +12,9 @@ To satisfy both the simulation and the gaming aspects, the application offers th
 
 Surrounding the gameplay there is a dynamic environment: the arena features a day/night cycle that automatically turns on the stadium lights, a dynamic camera that changes perspective based on the player's needs (follow, free orbit, or a "from the stands" view), and (for exhibition and challenge mode) an interactive audience that cheers and reacts to the player's acrobatics.
 
+> **Note**: The primary goal of this project is to implement faithful animations of technical roller skating jumps from scratch, **without importing any external animations**. For this reason the skater, NPCs, and various environmental props are intentionally built using simple geometric shapes to prioritize animation fluidity over aesthetics.
+
+
 ## Controls
 
 The application supports a dual control scheme: physical keyboard inputs (highly recommended for fast reactions in challenge mode) and on-screen HUD buttons.   
@@ -23,11 +26,12 @@ The application supports a dual control scheme: physical keyboard inputs (highly
 | `Z` / **Waltz** | Waltz Jump | +100 pts |
 | `X` / **Flip** | Flip Jump | +250 pts |
 | `C` / **Axel** | Double Axel Jump | +500 pts |
-| `S` / **Spin** | Fast Spin / Pirouette | +300 pts |
+| `S` / **Spin** | Spin | +300 pts |
 | `M` | Switch Mode / Abort active challenge | - |
 | `Enter` | Start challenge / Play-Pause (Exhibition) | - |
 
-> ⚙️ **Performance Troubleshooting:** If you experience a frame rate (FPS) drop, click the gear icon in the top-left corner to **dynamically scale down the rendering resolution** or **disable shadows**. This instantly reduces the workload on less powerful devices.
+> ⚙️ **Performance Troubleshooting:** If you experience a frame rate (FPS) drop, click the gear icon in the top-left corner to **dynamically scale down the rendering resolution** or **disable shadows**, this reduces the workload on less powerful devices.   
+> I recommend using Microsoft Edge for Windows users and Safari for macOS users, because in my experience, they offer better performance than Google Chrome.
 
 ## Repository Structure
 
