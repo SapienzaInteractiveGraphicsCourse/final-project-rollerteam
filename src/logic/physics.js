@@ -105,7 +105,13 @@ export function triggerCloneCollision(cloneX, cloneZ, mode) {
         state.isFalling = true;
         resetCurrentJumpPoints();
         TWEEN.removeAll();
-        updateHUDText("Clash with a clone!");
+        if (challengeActive){
+            updateHUDText("Clash with a clone! (-150 pt)");
+        }
+        else {
+            updateHUDText("Clash with a clone!");
+        }
+        
         updateScore(-150);
 
         // Compute where the player will be thrown 

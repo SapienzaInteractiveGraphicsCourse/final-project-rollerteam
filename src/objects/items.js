@@ -1,7 +1,7 @@
 import { scene } from '../renderer.js';
 import { state } from '../state.js';
 import { root } from './skater.js';
-import { updateScore, updateHUDText, challengeActive } from '../hud.js';
+import { updateScore, challengeActive, showTemporaryWarning } from '../hud.js';
 import { rinkRadiusX, rinkRadiusZ } from './rink.js';
 import { applyItemPhysicsPenalty } from '../logic/physics.js';
 
@@ -162,10 +162,10 @@ export function updateItems(time) {
 
                 if (item.type === 'bonus') {
                     updateScore(150);
-                    updateHUDText("🌟 Star! (+150)");
+                    showTemporaryWarning("🌟 Star! (+150 pt)");
                 } else {
                     updateScore(-100);
-                    updateHUDText("⚠️ Cone! (-100)");
+                    showTemporaryWarning("⚠️ Cone! (-100 pt)");
                     applyItemPhysicsPenalty(); 
                 }
             }

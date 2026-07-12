@@ -70,12 +70,22 @@ export function syncModeUI() {
     });
     updateUIStyles(state.gameMode);
 }
+let hudLocked = false;
 
 // HUD text update
 export function updateHUDText(text) {
+    if (hudLocked) return;
     if (lbl.textContent !== text) {
         lbl.textContent = text;
     }
+}
+export function showTemporaryWarning(text) {
+    if (lbl) lbl.textContent = text; 
+    hudLocked = true; 
+    
+    setTimeout(() => {
+        hudLocked = false;
+    }, 1500);
 }
 
 // 2. CHALLENGE STATE MACHINE 
@@ -256,7 +266,10 @@ export function updateChallengeTimerDisplay(dt) {
 
 // Validate physical constraints (speed, current FSM state) before begin the spin/jump
 export function tryJump(jumpFunction, points, jumpName) {
-    if (state.gameMode !== 'exhibition' && state.speedMag < 0.03) { updateHUDText("Too slow! Speed up to jump"); return; }
+    if (state.gameMode !== 'exhibition' && state.speedMag < 0.03) {
+        showTemporaryWarning("Too slow! Speed up to jump"); 
+        return;  
+    }
     if (state.jumping || state.isSpinning) return;
     if (jumpName === "Axel" && state.gameMode !== 'training'){
         triggerCrowdCheer('axel');
@@ -269,8 +282,8 @@ export function tryJump(jumpFunction, points, jumpName) {
 }
 export function trySpin() {
     if (state.gameMode !== 'exhibition' && state.speedMag < 0.03 && !state.isSpinning) { 
-        updateHUDText("Too slow! Speed up to spin"); 
-        return; 
+        showTemporaryWarning("Too slow! Speed up to spin"); 
+        return;
     }
     // If already jumping or spinning block the button
     if (state.jumping || state.isSpinning) return; 
@@ -309,7 +322,7 @@ if(btnExhStop) btnExhStop.addEventListener('click', () => {
     if (state.gameMode === 'exhibition') {
         state.exhibitionState = 'paused';
         state.speedMag = 0; 
-        updateHUDText("Esibizione: In Pausa");
+        showTemporaryWarning("Exhibition paused");
     }
 });
 

@@ -1,7 +1,7 @@
 // handle what happens when the user presses keys on the keyboard
 
 import { state } from '../state.js';
-import { updateHUDText, updateScore, setChallengeActive, syncModeUI, tryJump, trySpin, challengeActive, promptQuitChallenge } from '../hud.js';
+import { updateScore, setChallengeActive, syncModeUI, tryJump, trySpin, challengeActive, promptQuitChallenge, showTemporaryWarning } from '../hud.js';
 import { doWaltz, doFlip, doAxel, startSpin } from './animations.js';
 import { changeGameModeCinematic } from './camera.js';
 
@@ -42,7 +42,7 @@ window.addEventListener('keydown', (e) => {
             } else if (state.exhibitionState === 'skating') {
                 state.exhibitionState = 'paused';
                 state.speedMag = 0; 
-                updateHUDText("Exhibition paused");
+                showTemporaryWarning("Exhibition paused");
             }
         } else if (state.gameMode === 'challenge') {
             const btnStart = document.getElementById('btnStartChallenge');
@@ -73,7 +73,7 @@ window.addEventListener('keydown', (e) => {
     if (e.key === 'c' || e.key === 'C') tryJump(doAxel, 500, "Axel");
     if (e.key === 's' || e.key === 'S') {
         if (state.gameMode !== 'exhibition' && state.speedMag < 0.03 && !state.isSpinning) {
-            updateHUDText("Too slow! Speed up to spin");
+            showTemporaryWarning("Too slow! Speed up to spin"); 
             return;
         }
         trySpin();

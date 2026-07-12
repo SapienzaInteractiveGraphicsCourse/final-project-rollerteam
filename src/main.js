@@ -11,7 +11,7 @@ import { updateClonesLogic } from './objects/clones.js';
 import { updatePhysics } from './logic/physics.js';
 import { updateCamera } from './logic/camera.js';
 import { updateSpinFrame, updateSkatingAnimation, setIdlePose } from './logic/animations.js';
-import { showEndGameScreen, challengeActive, currentJumpPoints, resetCurrentJumpPoints, setChallengeActive, updateScore, updateChallengeTimerDisplay, updateFPSDisplay, hideLoadingScreen} from './hud.js';
+import { showEndGameScreen, challengeActive, currentJumpPoints, resetCurrentJumpPoints, setChallengeActive, updateScore, updateChallengeTimerDisplay, updateFPSDisplay, hideLoadingScreen, showTemporaryWarning} from './hud.js';
 import { initWallClock } from './objects/clock.js';
 import {updateItems} from './objects/items.js'
 
@@ -74,13 +74,14 @@ function animate(time) {
     if (wasJumping && !state.jumping && state.gameMode === 'challenge' && challengeActive) {
         if (currentJumpPoints > 0) {
             updateScore(currentJumpPoints);
+            showTemporaryWarning("Jump completed (+" + currentJumpPoints + " pt)");
             resetCurrentJumpPoints();
         }
     }
     if (wasSpinning && !state.isSpinning && state.gameMode === 'challenge' && challengeActive) {
         if (currentJumpPoints > 0) {
             updateScore(currentJumpPoints);
-            
+            showTemporaryWarning("Spin completed (+" + currentJumpPoints + " pt)");
             resetCurrentJumpPoints();
         }
     }
